@@ -2,8 +2,10 @@ package com.brohnson.jett.squat;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
@@ -16,7 +18,7 @@ import java.util.zip.Inflater;
 /**
  * Created by brett on 2/14/16.
  */
-public class StatsArrayAdapter extends ArrayAdapter<Squat> {
+public class StatsArrayAdapter extends ArrayAdapter<Squat> implements AdapterView.OnItemClickListener {
     Squat[] squats;
     Context context;
     public StatsArrayAdapter(Context context, int resource, Squat[] objects) {
@@ -40,5 +42,12 @@ public class StatsArrayAdapter extends ArrayAdapter<Squat> {
             ((ImageView)rowview.findViewById(R.id.image_completed)).setImageResource(R.drawable.redexx);
 
         return rowview;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent(context, SquatActivity.class);
+        intent.putExtra("Squat", squats[position]);
+        ;
     }
 }

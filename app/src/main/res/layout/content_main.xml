@@ -12,8 +12,7 @@
     android:theme="@style/AppTheme"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.brohnson.jett.squat.MainActivity"
-    tools:showIn="@layout/activity_main"
-    android:background="#ffffff">
+    tools:showIn="@layout/activity_main">
 
 
 </RelativeLayout>

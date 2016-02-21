@@ -2,5 +2,15 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
+    <color name="Blue900">#1A237E</color>
+    <color name="Blue800">#283593</color>
+    <color name="Blue700">#303F9F</color>
+    <color name="Blue600">#3949AB</color>
+    <color name="Blue500">#3F51B5</color>
+    <color name="Blue400">#5C6BC0</color>
+    <color name="Blue300">#7986CB</color>
+    <color name="Blue200">#9FA8DA</color>
+    <color name="Blue100">#E8EAF6</color>
+    <color name="Blue50">#E8EAF6</color>
     <color name="colorAccent">#FF4081</color>
 </resources>

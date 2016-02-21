@@ -7,7 +7,7 @@
         android:text="Start"
         android:id="@+id/startbutton"
         android:nestedScrollingEnabled="false"
-        android:background="@drawable/rectangle" />
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"

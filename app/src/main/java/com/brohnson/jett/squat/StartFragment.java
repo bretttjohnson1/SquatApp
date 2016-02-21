@@ -3,6 +3,7 @@ package com.brohnson.jett.squat;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -16,6 +17,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,7 +36,7 @@ import java.util.zip.Inflater;
 /**
  * Created by brett on 2/9/16.
  */
-public class StartFragment extends Fragment implements SensorEventListener, View.OnClickListener {
+public class StartFragment extends Fragment implements SensorEventListener, View.OnClickListener, AdapterView.OnItemClickListener {
     SensorManager mSensorManager;
     PowerManager power;
     PowerManager.WakeLock wl;
@@ -54,32 +57,27 @@ public class StartFragment extends Fragment implements SensorEventListener, View
 
         return rootView;
     }
-    /*
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-
-        // mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR),SensorManager.SENSOR_DELAY_FASTEST);
-    }
-    */
 
     DataOutputStream dout;
     FileOutputStream fout;
+    long timepressed = 0;
     private boolean recording = false;
     public void record(View view){
         if(!recording) {
             try {
-                fout =  context.openFileOutput("squats.dat", Context.MODE_PRIVATE);
+                filteredpitch=Float.MAX_VALUE;
+                parity=0;
+                past=false;
+                arraylength=0;
+                ListView squatlistview = (ListView)rootView.findViewById(R.id.squat_list_view);
+                squatlistview.setAdapter(null);
+
+                fout =  context.openFileOutput("squats.dat",Context.MODE_PRIVATE);
                 dout = new DataOutputStream(fout);
-            } catch (FileNotFoundException e) {
+                } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-
-            try{Thread.sleep(5000);}catch(InterruptedException e){e.printStackTrace();};
-            Vibrator v = (Vibrator)context.getSystemService(context.VIBRATOR_SERVICE);
-            if(v.hasVibrator())
-                v.vibrate(1000);
+            timepressed = System.currentTimeMillis();
             wl.acquire();;
             mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD), SensorManager.SENSOR_DELAY_FASTEST);
             mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_FASTEST);
@@ -90,15 +88,11 @@ public class StartFragment extends Fragment implements SensorEventListener, View
         else if(recording) {
             mSensorManager.unregisterListener(this);
             recording=false;
-            filteredpitch=Float.MAX_VALUE;
-            parity=0;
-            past=false;
 
             try {
-                fout.close();
+                started=false;
                 dout.close();
                 done();
-
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -109,54 +103,43 @@ public class StartFragment extends Fragment implements SensorEventListener, View
             wl.release();
         }
     }
-    int squats = 0;
+    int arraylength=0;
+    Squat squats[];
     private void done() throws IOException {
+
         FileInputStream fin = context.openFileInput("squats.dat");
         DataInputStream din = new DataInputStream(fin);
-
-        Log.d("Size",din.available()+"");
-
-        Squat squatlist[] = new Squat[squats];
-        ArrayList<Integer> angle = new ArrayList<Integer>();
-        ArrayList<Long> times = new ArrayList<Long>();
-        boolean writing = false;
-        ArrayList<Integer> anglestowrite = new ArrayList<Integer>();
-        ArrayList<Long> timestowrite = new ArrayList<Long>();
-
-        Log.d("loops",din.available()/12+"");
-        int count  = 0;
-        for(int a =0;din.available()/12>0;a++){
-            times.add(din.readLong());
-            angle.add(din.readInt());
-            if(!writing){
-                if(angle.get(a)<60){
-                    writing=true;
-                    anglestowrite = new ArrayList<Integer>();
-                    timestowrite = new ArrayList<Long>();
-                }
-
+        ArrayList<Squat> squatsarraylist = new ArrayList<Squat>();
+        ArrayList<Integer>endpts = new ArrayList<Integer>();
+        ArrayList<Integer>startpts = new ArrayList<Integer>();
+        Log.d("Available", din.available()+"");
+        boolean below = false;
+        int[] angles = new int[arraylength];
+        long[] times = new long[arraylength];
+        for(int a = 0; a<arraylength;a++){
+            times[a]=din.readLong();
+            angles[a]=din.readInt();
+            if(angles[a]<55 && !below) {
+                below = true;
+                startpts.add(a);
+            }else if(angles[a]>60 && below){
+                below  = false;
+                endpts.add(a);
             }
-            Log.d("angle",angle.get(a)+"");
-            if(writing){
-                if(angle.get(a)>=60){
-                    writing=false;
-                    Long t[] = timestowrite.toArray(new Long[timestowrite.size()]);
-                    Integer s[] = anglestowrite.toArray(new Integer[anglestowrite.size()]);
-                    squatlist[count] = new Squat(s,t);
-                    count++;
 
-                }
-                anglestowrite.add(angle.get(a));
-                timestowrite.add(times.get(a));
-
-                //Log.d("loops", din.available() / 12 + "");
-            }
         }
-        Log.d("count",count+"");
-        fin.close();
+        fin.getChannel().position(0);
         din.close();
+        for(int a = 0;a<endpts.size();a++){
+            Squat s = new Squat(angles,times,startpts.get(a),endpts.get(a));
+                    if(s.depth<55)
+                        squatsarraylist.add(s);
+        }
         ListView squatlistview = (ListView)rootView.findViewById(R.id.squat_list_view);
-        squatlistview.setAdapter(new StatsArrayAdapter(context,R.id.squat_list_view, squatlist));
+        squats = squatsarraylist.toArray(new Squat[squatsarraylist.size()]);
+        StatsArrayAdapter stats = new StatsArrayAdapter(context, R.id.squat_list_view, squats);
+        squatlistview.setAdapter(stats);
+        squatlistview.setOnItemClickListener(this);
     }
 
     float[] geomagnetic;
@@ -164,15 +147,22 @@ public class StartFragment extends Fragment implements SensorEventListener, View
     float filteredpitch = Float.MAX_VALUE;
     int parity = 0;
     boolean past = false;
+    boolean started = false;
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
             gravity = event.values;
         if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD)
             geomagnetic = event.values;
-        float rot[] = new float[9];
-        float I[] = new float[9];
-        if (geomagnetic != null && gravity != null) {
+        if(System.currentTimeMillis()-5000>timepressed && !started){
+            started = true;
+            Vibrator v = (Vibrator)context.getSystemService(context.VIBRATOR_SERVICE);
+            if(v.hasVibrator())
+                v.vibrate(1000);
+        }
+        if (geomagnetic != null && gravity != null &&started) {
+            float rot[] = new float[9];
+            float I[] = new float[9];
             boolean success = SensorManager.getRotationMatrix(rot, I, gravity, geomagnetic);
             float orientation[] = new float[3];
             if (success) {
@@ -182,7 +172,7 @@ public class StartFragment extends Fragment implements SensorEventListener, View
                     filteredpitch = orientation[1];
                     parity = (filteredpitch<0)?1:-1;
                 } else {
-                    filteredpitch += (orientation[1] - filteredpitch) * .05f;
+                    filteredpitch += (orientation[1] - filteredpitch) * .01f;
                 }
                 TextView t = (TextView) (rootView.findViewById(R.id.showangle));
                 t.setText((int) (-90 * filteredpitch / Math.PI * 2)*parity + " ");
@@ -190,7 +180,8 @@ public class StartFragment extends Fragment implements SensorEventListener, View
                 //writefile
                 try {
                     dout.writeLong(System.currentTimeMillis());
-                    dout.writeInt((int) (-90 * filteredpitch / Math.PI * 2)*parity);
+                    dout.writeInt((int) (-90 * filteredpitch / Math.PI * 2) * parity);
+                    arraylength++;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -201,7 +192,6 @@ public class StartFragment extends Fragment implements SensorEventListener, View
                     Vibrator v = (Vibrator) context.getSystemService(context.VIBRATOR_SERVICE);
                     if (v.hasVibrator())
                         v.vibrate(1000);
-                    squats++;
                 }
                 if(((int) (-90 * filteredpitch / Math.PI * 2))*parity>Squat.REQUIRED_DEPTH+20 && past){
                     past=false;
@@ -224,5 +214,11 @@ public class StartFragment extends Fragment implements SensorEventListener, View
 
         }
 
+    }
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent(context, SquatActivity.class);
+        intent.putExtra("Squat", squats[position]);
+        startActivity(intent);
     }
 }

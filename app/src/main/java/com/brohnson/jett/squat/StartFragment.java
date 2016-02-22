@@ -10,6 +10,8 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.os.PowerManager;
 import android.os.Vibrator;
 import android.support.v4.content.ContextCompat;
@@ -30,7 +32,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.StreamCorruptedException;
 import java.util.ArrayList;
+import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
 
 /**
@@ -72,7 +78,7 @@ public class StartFragment extends Fragment implements SensorEventListener, View
                 ListView squatlistview = (ListView)rootView.findViewById(R.id.squat_list_view);
                 squatlistview.setAdapter(null);
 
-                fout =  context.openFileOutput("squats.dat",Context.MODE_PRIVATE);
+                fout =  context.openFileOutput("squatsraw.dat",Context.MODE_PRIVATE);
                 dout = new DataOutputStream(fout);
                 } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -107,7 +113,7 @@ public class StartFragment extends Fragment implements SensorEventListener, View
     Squat squats[];
     private void done() throws IOException {
 
-        FileInputStream fin = context.openFileInput("squats.dat");
+        FileInputStream fin = context.openFileInput("squatsraw.dat");
         DataInputStream din = new DataInputStream(fin);
         ArrayList<Squat> squatsarraylist = new ArrayList<Squat>();
         ArrayList<Integer>endpts = new ArrayList<Integer>();
@@ -137,8 +143,9 @@ public class StartFragment extends Fragment implements SensorEventListener, View
         }
         ListView squatlistview = (ListView)rootView.findViewById(R.id.squat_list_view);
         squats = squatsarraylist.toArray(new Squat[squatsarraylist.size()]);
-        StatsArrayAdapter stats = new StatsArrayAdapter(context, R.id.squat_list_view, squats);
-        squatlistview.setAdapter(stats);
+
+
+        squatlistview.setAdapter(new StatsArrayAdapter(context, R.id.squat_list_view, squats));
         squatlistview.setOnItemClickListener(this);
     }
 

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.LegendRenderer;
@@ -20,6 +21,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.zip.DataFormatException;
 
 /**
  * Created by brett on 2/9/16.
@@ -38,6 +40,9 @@ public class StatsFragment extends Fragment {
             FileInputStream fin = context.openFileInput("squats.dat");
 
             DataInputStream din = new DataInputStream(fin);
+
+            if(din.available()==0)
+                throw new DataFormatException();
             while(din.available()>0){
                 timesdata.add(din.readLong());
                 anglesdata.add(din.readInt());
@@ -80,6 +85,9 @@ public class StatsFragment extends Fragment {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (DataFormatException e) {
+            e.printStackTrace();
+            Toast.makeText(context, "No Data Recorded Yet", Toast.LENGTH_SHORT).show();
         }
         return rootView;
     }

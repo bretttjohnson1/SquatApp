@@ -58,35 +58,9 @@ public class SquatActivity extends AppCompatActivity {
        graph.getViewport().setScalable(true);
        graph.getViewport().setScrollable(true);
 
-       int maxdropspeed = 0;
-       int maxupspeed = 0;
 
-       for(int a = squat.start;a<squat.end-100;a++){
-           int speed = (squat.angles[a+100]-squat.angles[a])*1000/(int)(squat.times[a+100]-squat.times[a]);
-           if(speed>maxupspeed)
-               maxupspeed=speed;
-           if(speed<maxdropspeed)
-               maxdropspeed=speed;
-        }
-       int averageupspeed = 0;
-       int averagedownspeed = 0;
-       for(int a = squat.start ;a<squat.end;a++){
-            if(squat.angles[a]==squat.depth) {
-                averageupspeed = (squat.angles[squat.end]-squat.angles[a])*1000/(int)(squat.times[squat.end]-squat.times[a]);
-                averagedownspeed = (squat.angles[a]-squat.angles[squat.start])*1000/(int)(squat.times[a]-squat.times[squat.start]);
-                break;
-            }
-       }
-       long starttimeunder=0;
-       long endtimeunder=0;
-       for(int a = squat.start;a<squat.end;a++){
-           if(starttimeunder==0 && squat.angles[a]<=Squat.REQUIRED_DEPTH-1)
-               starttimeunder=squat.times[a];
-           else if(starttimeunder!=0 && endtimeunder==0 && squat.angles[a]>=Squat.REQUIRED_DEPTH+1)
-               endtimeunder = squat.times[a];
-       }
        ListView listview = (ListView)findViewById(R.id.individual_stats_listview);
-       int values[] = new int[]{squat.depth, averageupspeed,averagedownspeed,maxupspeed,maxdropspeed,(int)(endtimeunder-starttimeunder)};
+       int values[] = new int[]{squat.depth, squat.averageupspeed,squat.averagedownspeed,squat.maxupspeed,squat.maxdropspeed,(int)(squat.endtimeunder-squat.starttimeunder)};
        String names[] = new String[]{"Depth","Average Upward Angular Speed","Average Downward Angular Speed","Max Upward Angular Speed","Max Downward Angular Speed","Time At Bottom"};
        listview.setAdapter(new SquatStatsArrayAdapter(this,R.id.individual_stats_listview,names,values));
 

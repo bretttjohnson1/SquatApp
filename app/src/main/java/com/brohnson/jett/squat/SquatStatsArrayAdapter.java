@@ -33,7 +33,7 @@ public class SquatStatsArrayAdapter extends ArrayAdapter<String> {
                 value.setText(((float)values[position])/1000 + "s");
                 break;
             case (0):
-                value.setText(Math.abs(values[position]) + "" + (char) 0x00B0);
+                value.setText(values[position]+ "" + (char) 0x00B0);
                 break;
             default:
                 value.setText(Math.abs(values[position]) + "" + (char) 0x00B0 + "/s");

@@ -1,13 +1,22 @@
 package com.brohnson.jett.squat;
 
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by brett on 2/14/16.
  */
 public class Squat implements Parcelable{
-    public static int REQUIRED_DEPTH = 6;
+    public static int REQUIRED_DEPTH = 3;
+    public static int MINIMUM_START_DEPTH=60;
+
     boolean completed;
     int depth,start,end;
     int maxdropspeed;
@@ -46,8 +55,10 @@ public class Squat implements Parcelable{
 
         for(int a = start ;a<end;a++){
             if(angles[a]==depth) {
-                averageupspeed = (angles[end]-angles[a])*1000/(int)(times[end]-times[a]);
-                averagedownspeed = (angles[a]-angles[start])*1000/(int)(times[a]-times[start]);
+                if(a!= end)
+                    averageupspeed = (angles[end]-angles[a])*1000/(int)(times[end]-times[a]);
+                if(a != start)
+                    averagedownspeed = (angles[a]-angles[start])*1000/(int)(times[a]-times[start]);
                 break;
             }
         }
@@ -105,5 +116,39 @@ public class Squat implements Parcelable{
         dest.writeLong(endtimeunder);
         dest.writeIntArray(angles);
         dest.writeLongArray(times);
+    }
+
+    public static Squat[] readsquatdata(Context context,int arraylength) throws IOException {
+        FileInputStream fin = context.openFileInput("squats.dat");
+        DataInputStream din = new DataInputStream(fin);
+        ArrayList<Squat> squatsarraylist = new ArrayList<Squat>();
+        ArrayList<Integer>endpts = new ArrayList<Integer>();
+        ArrayList<Integer>startpts = new ArrayList<Integer>();
+        Log.d("Available", din.available() + "");
+        boolean below = false;
+        int[] angles = new int[arraylength];
+        long[] times = new long[arraylength];
+        for(int a = 0; a<arraylength;a++){
+            times[a]=din.readLong();
+            angles[a]=din.readInt();
+            if(angles[a]<60 && !below) {
+                below = true;
+                startpts.add(a);
+            }else if(angles[a]>60 && below){
+                below  = false;
+                endpts.add(a);
+            }
+
+        }
+        fin.getChannel().position(0);
+        din.close();
+        for(int a = 0;a<endpts.size();a++){
+            Squat s = new Squat(angles,times,startpts.get(a),endpts.get(a));
+            if(s.depth<50)
+                squatsarraylist.add(s);
+        }
+
+        Squat squats[] = squatsarraylist.toArray(new Squat[squatsarraylist.size()]);
+        return squats;
     }
 }

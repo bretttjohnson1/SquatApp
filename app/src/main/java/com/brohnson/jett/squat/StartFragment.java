@@ -60,10 +60,13 @@ public class StartFragment extends Fragment implements SensorEventListener, View
         try {
             FileInputStream fin = context.openFileInput("length.dat");
             DataInputStream din = new DataInputStream(fin);
-            if(din.available()>=4) {
+            if(din.available()>0) {
                 arraylength = din.readInt();
                 Log.d("length", arraylength+"");
-                squats = Squat.readsquatdata(MainActivity.globalContext,arraylength);
+                squats = Squat.readsquatdata(MainActivity.globalContext, arraylength);
+                ListView squatlistview = (ListView)rootView.findViewById(R.id.squat_list_view);
+                squatlistview.setAdapter(new StatsArrayAdapter(context, R.id.squat_list_view, squats));
+                squatlistview.setOnItemClickListener(this);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

@@ -13,12 +13,14 @@ import android.widget.TextView;
 public class SquatStatsArrayAdapter extends ArrayAdapter<String> {
     int values[];
     String  names[];
+    int types[];
     Context context;
-    public SquatStatsArrayAdapter(Context context, int resource, String names[], int values[]) {
+    public SquatStatsArrayAdapter(Context context, int resource, String names[], int values[], int types[]) {
         super(context, resource,names);
         this.values=values;
         this.names = names;
         this.context=context;
+        this.types=types;
 
     }
     @Override
@@ -28,11 +30,11 @@ public class SquatStatsArrayAdapter extends ArrayAdapter<String> {
         TextView name = (TextView)rowview.findViewById(R.id.name);
         TextView value = (TextView)rowview.findViewById(R.id.value);
         name.setText(names[position]);
-        switch (position) {
-            case (5):
+        switch (types[position]) {
+            case (2):
                 value.setText(((float)values[position])/1000 + "s");
                 break;
-            case (0):
+            case (1):
                 value.setText(values[position]+ "" + (char) 0x00B0);
                 break;
             default:

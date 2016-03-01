@@ -23,7 +23,7 @@ public class SquatStatsArrayAdapter extends ArrayAdapter<String> {
         this.types=types;
 
     }
-    @Override 
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflate = LayoutInflater.from(context);
         View rowview = inflate.inflate(R.layout.squat_stats_listview_individual, null, true);

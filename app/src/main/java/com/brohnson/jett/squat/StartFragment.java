@@ -9,6 +9,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.PowerManager;
 import android.os.Vibrator;
 import android.util.Log;
@@ -16,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +29,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by brett on 2/9/16.
@@ -37,6 +41,9 @@ public class StartFragment extends Fragment implements SensorEventListener, View
     PowerManager.WakeLock wl;
     View rootView;
     Context context;
+    //time in ms until recording starts after button press
+    final long waittime = 5000;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -77,6 +84,15 @@ public class StartFragment extends Fragment implements SensorEventListener, View
 
         return rootView;
     }
+
+    @Override
+    public void onDestroy() {
+        if(recording)
+            endrecord();
+        super.onDestroy();
+    }
+
+
     //array of squats to be filled
     Squat squats[];
     int arraylength=0;
@@ -94,64 +110,98 @@ public class StartFragment extends Fragment implements SensorEventListener, View
      */
     public void record(View view){
         if(!recording) {
-            /**
-             * this try statement begins recording data by clearing the list of current squats and the current squat data file
-             * it also resets the parity, past, started and arraylength variables
-             */
-            try {
-                filteredpitch=Float.MAX_VALUE;
-                parity=0;
-                past=false;
-                started=false;
-                arraylength=0;
-                ListView squatlistview = (ListView)rootView.findViewById(R.id.squat_list_view);
-                squatlistview.setAdapter(null);
-
-                fout =  context.openFileOutput("squats.dat",Context.MODE_PRIVATE);
-                dout = new DataOutputStream(fout);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            /**
-             * the following resets the timepressed variable and registers the appropriate sensor listners
-             */
-            timepressed = System.currentTimeMillis();
-            wl.acquire();;
-            mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD), SensorManager.SENSOR_DELAY_FASTEST);
-            mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_FASTEST);
-            mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY), SensorManager.SENSOR_DELAY_FASTEST);
-            recording=true;
-
+            startrecord();
         }
-        else if(recording) {
-            mSensorManager.unregisterListener(this);
-            recording=false;
-
-            /**
-             * the following try statement reads squat data and formats the list view with squats
-             * it then writes the length variable for later use
-             */
-            try {
-                dout.close();
-                squats =  Squat.readsquatdata(MainActivity.globalContext,arraylength);
-
-                ListView squatlistview = (ListView)rootView.findViewById(R.id.squat_list_view);
-                squatlistview.setAdapter(new StatsArrayAdapter(context, R.id.squat_list_view, squats));
-                squatlistview.setOnItemClickListener(this);
-
-                FileOutputStream fout = context.openFileOutput("length.dat",Context.MODE_PRIVATE);
-                DataOutputStream dout = new DataOutputStream(fout);
-                dout.writeInt(arraylength);
-                arraylength=0;
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-                Toast.makeText(context, "Error could not close datastream ", Toast.LENGTH_SHORT).show();
-            }
-
-            wl.release();
+        else if(recording && System.currentTimeMillis()-waittime>timepressed) {
+            endrecord();
         }
+    }
+
+    /**
+     * the following 13 lines of code
+     * set up the runnable and handler for the countdown text display for the button
+     */
+    final Handler handler = new Handler();
+    class Countdown implements Runnable{
+        Button startbutton;
+        Countdown(Button b){
+            startbutton=b;
+        }
+        @Override
+        public void run() {
+            //this writes the time left rounded to 1 decimal
+            startbutton.setText("Starting in " +
+                    (float)((int)(-(System.currentTimeMillis()-waittime-timepressed))/100)/10);
+            handler.postDelayed(this,10);
+        }
+    };
+
+    //runnable for countdown
+    Countdown countdown;
+
+    private void startrecord(){
+        /**
+         * this try statement begins recording data by clearing the list of current squats and the current squat data file
+         * it also resets the parity, past, started and arraylength variables
+         */
+        try {
+            filteredpitch=Float.MAX_VALUE;
+            parity=0;
+            past=false;
+            started=false;
+            arraylength=0;
+            ListView squatlistview = (ListView)rootView.findViewById(R.id.squat_list_view);
+            squatlistview.setAdapter(null);
+
+            fout =  context.openFileOutput("squats.dat",Context.MODE_PRIVATE);
+            dout = new DataOutputStream(fout);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        /**
+         * the following resets the timepressed variable
+         * registers the appropriate sensor listners
+         * and activates the countdown
+         */
+        timepressed = System.currentTimeMillis();
+        countdown =  new Countdown((Button)rootView.findViewById(R.id.startbutton));
+        handler.postDelayed(countdown, 0);
+        wl.acquire();
+        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD), SensorManager.SENSOR_DELAY_FASTEST);
+        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_FASTEST);
+        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY), SensorManager.SENSOR_DELAY_FASTEST);
+        recording=true;
+    }
+    private void endrecord(){
+        ((Button)rootView.findViewById(R.id.startbutton)).setText("Start");
+
+        mSensorManager.unregisterListener(this);
+        recording=false;
+        wl.release();
+        /**
+         * the following try statement reads squat data and formats the list view with squats
+         * it then writes the length variable for later use
+         */
+        try {
+            dout.close();
+            squats =  Squat.readsquatdata(MainActivity.globalContext,arraylength);
+
+            ListView squatlistview = (ListView)rootView.findViewById(R.id.squat_list_view);
+            squatlistview.setAdapter(new StatsArrayAdapter(context, R.id.squat_list_view, squats));
+            squatlistview.setOnItemClickListener(this);
+
+            FileOutputStream fout = context.openFileOutput("length.dat",Context.MODE_PRIVATE);
+            DataOutputStream dout = new DataOutputStream(fout);
+            dout.writeInt(arraylength);
+            arraylength=0;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(context, "Error could not close datastream ", Toast.LENGTH_SHORT).show();
+        }
+
+
     }
 
     //float array for storing geomagnetic vector data
@@ -174,7 +224,12 @@ public class StartFragment extends Fragment implements SensorEventListener, View
         if (event.sensor.getType() == Sensor.TYPE_GRAVITY)
             gravity = event.values;
 
-        if(System.currentTimeMillis()-5000>timepressed && !started){
+        /**
+         * the following if statement stops the countdown and causes a vibration
+         * indicating recording has started
+         */
+        if(System.currentTimeMillis()-waittime>timepressed && !started){
+            handler.removeCallbacks(countdown);
             started = true;
             Vibrator v = (Vibrator)context.getSystemService(context.VIBRATOR_SERVICE);
             if(v.hasVibrator())

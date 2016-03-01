@@ -87,6 +87,11 @@ public class StartFragment extends Fragment implements SensorEventListener, View
     long timepressed = 0;
     //is it recording
     private boolean recording = false;
+
+    /**
+     * TODO: prevent duplicate clicks and squatting processes
+     * 
+     */
     public void record(View view){
         if(!recording) {
             /**

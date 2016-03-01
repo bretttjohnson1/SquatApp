@@ -90,6 +90,7 @@ public class StatsFragment extends Fragment {
             graph.addSeries(zeroline);
             graph.getViewport().setYAxisBoundsManual(true);
             graph.getViewport().setXAxisBoundsManual(true);
+            graph.getViewport().setMinX(0);
             graph.getViewport().setMaxX(times[times.length - 1] - times[0] + 500);
             graph.getViewport().setMinY(-40);
             graph.getViewport().setMaxY(90);
@@ -100,24 +101,36 @@ public class StatsFragment extends Fragment {
             graph.getViewport().setScrollable(true);
 
 
-            /**
-             * TODO: make average, max, and min rest times
-             */
-            long starttime = 0;
-            long endttime = 0;
-            for(int a = 0;a<arraylength;a++){
-                if(starttime==0 && angles[a]>=Squat.MINIMUM_START_DEPTH-1)
-                    starttime=times[a];
-                else if(starttime!=0 && endttime==0 && angles[a]<=Squat.MINIMUM_START_DEPTH+1){
-                    endttime = times[a];
+            Squat squats[] = Squat.readsquatdata(context,arraylength);
+            int averagedepth = 0;
+            int averageupspeed = 0;
+            int averagedownspeed = 0;
+            int averagetimedownunder = 0;
+            long averagepause=0;
+            long maxpause=0;
+            for(int a =0;a< squats.length;a++){
+                averagedepth+=squats[a].depth;
+                averageupspeed+=squats[a].averageupspeed;
+                averagedownspeed+=squats[a].averagedownspeed;
+                averagetimedownunder+=(squats[a].endtimeunder-squats[a].starttimeunder);
+                averagepause+=(squats[a].endtimeunder-squats[a].starttimeunder);
+                if(a<squats.length-1){
+                    if((squats[a+1].starttimeunder-squats[a].endtimeunder)>maxpause)
+                        maxpause=squats[a+1].starttimeunder-squats[a].endtimeunder;
+
                 }
-
             }
+            averagepause=(times[times.length-1]-averagepause-squats[0].starttimeunder)/squats.length;
+            averagedepth/=squats.length;
+            averageupspeed/=squats.length;
+            averagedownspeed/=squats.length;
+            averagetimedownunder/=squats.length;
 
-           // ListView listview = (ListView)rootView.findViewById(R.id.individual_stats_listview);
-          //  int values[] = new int[]{squat.depth, squat.averageupspeed,squat.averagedownspeed,squat.maxupspeed,squat.maxdropspeed,(int)(squat.endtimeunder-squat.starttimeunder)};
-          //String names[] = new String[]{"Depth","Average Upward Angular Speed","Average Downward Angular Speed","Max Upward Angular Speed","Max Downward Angular Speed","Time At Bottom"};
-           // listview.setAdapter(new SquatStatsArrayAdapter(this, R.id.individual_stats_listview, names, values));
+            ListView listview = (ListView)rootView.findViewById(R.id.stats_listView);
+            int types[] = new int[]{1,0,0,2,2,2};
+            int values[] = new int[]{averagedepth,averageupspeed,averagedownspeed,averagetimedownunder,(int)averagepause,(int)maxpause};
+            String names[] = new String[]{"Average Depth","Average Upward Angular Speed","Average Downward Angular Speed","Average Time At Bottom","Average Pause Time","Longest Pause Time"};
+            listview.setAdapter(new SquatStatsArrayAdapter(context, R.id.individual_stats_listview, names, values,types));
 
 
         } catch (FileNotFoundException e) {

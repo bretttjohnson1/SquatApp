@@ -90,7 +90,7 @@ public class StartFragment extends Fragment implements SensorEventListener, View
 
     /**
      * TODO: prevent duplicate clicks and squatting processes
-     * 
+     *
      */
     public void record(View view){
         if(!recording) {

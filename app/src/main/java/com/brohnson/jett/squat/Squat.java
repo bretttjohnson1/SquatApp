@@ -44,6 +44,18 @@ public class Squat implements Parcelable{
         averagedownspeed = 0;
         starttimeunder=0;
         endtimeunder=0;
+        int starttimeunderindex = -1;
+        int endtimeunderindex = -1;
+        for(int a = start;a<end;a++){
+            if(starttimeunder==0 && angles[a]<=REQUIRED_DEPTH-1) {
+                starttimeunderindex=a;
+                starttimeunder = times[a];
+            }
+            else if(starttimeunder!=0 && endtimeunder==0 && angles[a]>=REQUIRED_DEPTH+1) {
+                endtimeunderindex=a;
+                endtimeunder = times[a];
+            }
+        }
 
         for(int a = start;a<end-100;a++){
             int speed = (angles[a+100]-angles[a])*1000/(int)(times[a+100]-times[a]);
@@ -53,22 +65,13 @@ public class Squat implements Parcelable{
                 maxdropspeed=speed;
         }
 
-        for(int a = start ;a<end;a++){
-            if(angles[a]==depth) {
-                if(a!= end)
-                    averageupspeed = (angles[end]-angles[a])*1000/(int)(times[end]-times[a]);
-                if(a != start)
-                    averagedownspeed = (angles[a]-angles[start])*1000/(int)(times[a]-times[start]);
-                break;
-            }
-        }
 
-        for(int a = start;a<end;a++){
-            if(starttimeunder==0 && angles[a]<=REQUIRED_DEPTH-1)
-                starttimeunder=times[a];
-            else if(starttimeunder!=0 && endtimeunder==0 && angles[a]>=REQUIRED_DEPTH+1)
-                endtimeunder = times[a];
-        }
+        if(endtimeunderindex != -1 && endtimeunderindex != end)
+            averageupspeed = (angles[end]-angles[endtimeunderindex])*1000/(int)(times[end]-times[endtimeunderindex]);
+        if(starttimeunderindex != -1 && starttimeunderindex != start)
+            averagedownspeed = (angles[starttimeunderindex]-angles[start])*1000/(int)(times[starttimeunderindex]-times[start]);
+
+
     }
 
     public static final Parcelable.Creator<Squat> CREATOR = new Parcelable.Creator<Squat>() {

@@ -30,7 +30,7 @@ public class SquatActivity extends AppCompatActivity {
       if((squat.end-squat.start)%interval==0){
          data = new DataPoint[(squat.end-squat.start)/interval];
       }
-      Log.d("size", squat.end-squat.start + " " + squat.times.length + " " + data.length);
+      Log.d("size", squat.end - squat.start + " " + squat.times.length + " " + data.length);
       for(int a =squat.start;a<squat.end;a+=interval){
          data[(a-squat.start)/interval] = new DataPoint(squat.times[a]-squat.times[squat.start],squat.angles[a]);
       }
@@ -44,13 +44,16 @@ public class SquatActivity extends AppCompatActivity {
       zero[0] = new DataPoint(0,Squat.REQUIRED_DEPTH);
       zero[1] = new DataPoint(squat.times[squat.end]-squat.times[squat.start]+500,Squat.REQUIRED_DEPTH);
       LineGraphSeries<DataPoint> zeroline = new LineGraphSeries<DataPoint>(zero);
-      zeroline.setTitle("Required Depth ("+Squat.REQUIRED_DEPTH+(char) 0x00B0+")");
+      zeroline.setTitle("Required Depth (" + Squat.REQUIRED_DEPTH + (char) 0x00B0 + ")");
       zeroline.setColor(Color.RED);
       graph.addSeries(zeroline);
       graph.getViewport().setYAxisBoundsManual(true);
       graph.getViewport().setXAxisBoundsManual(true);
       graph.getViewport().setMaxX(squat.times[squat.end] - squat.times[squat.start] + 500);
-      graph.getViewport().setMinY(((int) (-10 + squat.depth) / 10) * 10 - 10);
+      if(squat.depth<=Squat.REQUIRED_DEPTH)
+         graph.getViewport().setMinY(90-4*(int)((90-squat.depth+10)/4));
+      else
+         graph.getViewport().setMinY(-10);
       graph.getViewport().setMaxY(90);
       graph.getLegendRenderer().setVisible(true);
       graph.getLegendRenderer().setBackgroundColor(Color.TRANSPARENT);

@@ -13,4 +13,5 @@
     <color name="Blue100">#C5CAE9</color>
     <color name="Blue50">#E8EAF6</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="redText">#F44336</color>
 </resources>

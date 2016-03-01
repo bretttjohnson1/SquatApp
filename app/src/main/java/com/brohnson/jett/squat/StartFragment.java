@@ -28,9 +28,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by brett on 2/9/16.
@@ -104,10 +101,7 @@ public class StartFragment extends Fragment implements SensorEventListener, View
     //is it recording
     private boolean recording = false;
 
-    /**
-     * TODO: prevent duplicate clicks and squatting processes
-     *
-     */
+
     public void record(View view){
         if(!recording) {
             startrecord();
@@ -255,8 +249,6 @@ public class StartFragment extends Fragment implements SensorEventListener, View
                 } else {
                     filteredpitch += (orientation[1] - filteredpitch) * .01f;
                 }
-                TextView t = (TextView) (rootView.findViewById(R.id.showangle));
-                t.setText((int) (-90 * filteredpitch / Math.PI * 2) * parity + " ");
 
                 /**
                  * this try statement writes to the squat data

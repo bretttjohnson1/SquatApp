@@ -3,32 +3,25 @@
     android:layout_width="match_parent" android:layout_height="match_parent">
     <Button
         android:layout_width="match_parent"
-        android:layout_height="105dp"
+        android:layout_height="80dp"
         android:text="Start"
         android:id="@+id/startbutton"
         android:nestedScrollingEnabled="false"
-        android:layout_alignParentEnd="true"
         android:background="@drawable/start_button"
         android:allowUndo="true"
-        android:textColor="@color/Blue900" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="0"
-        android:id="@+id/showangle"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentStart="true"
+        android:layout_margin="5dp"
+        android:textColor="#FFEFEFEF" />
 
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/squat_list_view"
-        android:layout_below="@+id/startbutton"
+        android:headerDividersEnabled="true"
+        android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/showangle"
-        android:headerDividersEnabled="true" />
+        android:layout_above="@+id/startbutton" />
 
 
 </RelativeLayout>

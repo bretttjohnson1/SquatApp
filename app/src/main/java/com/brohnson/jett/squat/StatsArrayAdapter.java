@@ -3,6 +3,8 @@ package com.brohnson.jett.squat;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -35,11 +37,11 @@ public class StatsArrayAdapter extends ArrayAdapter<Squat> implements AdapterVie
             ((TextView)rowview.findViewById(R.id.text_completed)).setText("Completed");
         else
             ((TextView)rowview.findViewById(R.id.text_completed)).setText("Failed");
-        ((TextView)rowview.findViewById(R.id.text_angle)).setText("Depth Angle: "+squats[position].depth);
+        ((TextView)rowview.findViewById(R.id.text_angle)).setText("Depth Angle: " + squats[position].depth);
         if(squats[position].depth <= Squat.REQUIRED_DEPTH)
-            ((ImageView)rowview.findViewById(R.id.image_completed)).setImageResource(R.drawable.greencheckmark);
+            ((TextView) rowview.findViewById(R.id.text_completed)).setTextColor(ContextCompat.getColor(context,R.color.Blue500));
         else
-            ((ImageView)rowview.findViewById(R.id.image_completed)).setImageResource(R.drawable.redexx);
+            ((TextView) rowview.findViewById(R.id.text_completed)).setTextColor(ContextCompat.getColor(context,R.color.redText));
 
         return rowview;
     }

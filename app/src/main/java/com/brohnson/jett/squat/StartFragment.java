@@ -86,7 +86,7 @@ public class StartFragment extends Fragment implements SensorEventListener, View
     @Override
     public void onDestroy() {
         if(recording)
-            endrecord();
+            record(rootView);
         super.onDestroy();
     }
 
@@ -106,6 +106,12 @@ public class StartFragment extends Fragment implements SensorEventListener, View
     public void record(View view){
         if(!recording) {
             startrecord();
+        }else if(!started){
+            handler.removeCallbacks(initrec);
+            handler.removeCallbacks(countdown);
+            ((Button)rootView.findViewById(R.id.startbutton)).setText("Start");
+            ((Button)rootView.findViewById(R.id.startbutton)).setBackground(ContextCompat.getDrawable(context, R.drawable.start_button));
+            recording=false;
         }
         else if(recording) {
             endrecord();
@@ -130,43 +136,62 @@ public class StartFragment extends Fragment implements SensorEventListener, View
         }
     };
 
+    class InitializeRecord implements  Runnable{
+
+        @Override
+        public void run() {
+            /**
+             * this try statement begins recording data by clearing the current squat data file
+             * it also resets the parity, past, started and arraylength variables
+             * it then sets the start button color red
+             */
+            try {
+                filteredpitch=Float.MAX_VALUE;
+                parity=0;
+                past=false;
+                arraylength=0;
+
+                ListView squatlistview = (ListView)rootView.findViewById(R.id.squat_list_view);
+                squatlistview.setAdapter(null);
+
+                fout =  context.openFileOutput("squats.dat",Context.MODE_PRIVATE);
+                dout = new DataOutputStream(fout);
+
+                /**
+                 * the following statements stop the countdown and causes a vibration
+                 * indicating recording has started
+                 */
+                handler.removeCallbacks(countdown);
+                started = true;
+                Vibrator v = (Vibrator)context.getSystemService(context.VIBRATOR_SERVICE);
+                if(v.hasVibrator())
+                    v.vibrate(1000);
+                handler.removeCallbacks(this);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     //runnable for countdown
     Countdown countdown;
-
-    /**
-     * todo: make data clear happen after countdown
-     */
+    InitializeRecord initrec;
 
     private void startrecord(){
-        /**
-         * this try statement begins recording data by clearing the current squat data file
-         * it also resets the parity, past, started and arraylength variables
-         * it then sets the start button color red
-         */
-        try {
-            filteredpitch=Float.MAX_VALUE;
-            parity=0;
-            past=false;
-            started=false;
-            arraylength=0;
 
-            ListView squatlistview = (ListView)rootView.findViewById(R.id.squat_list_view);
-            squatlistview.setAdapter(null);
-
-            ((Button)rootView.findViewById(R.id.startbutton)).setBackground(ContextCompat.getDrawable(context, R.drawable.start_button_cancel));
-            fout =  context.openFileOutput("squats.dat",Context.MODE_PRIVATE);
-            dout = new DataOutputStream(fout);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
         /**
          * the following resets the timepressed variable
          * registers the appropriate sensor listners
          * and activates the countdown
+         * it also sets the button to red instead of blue
          */
+
+        ((Button)rootView.findViewById(R.id.startbutton)).setBackground(ContextCompat.getDrawable(context, R.drawable.start_button_cancel));
         timepressed = System.currentTimeMillis();
         countdown =  new Countdown((Button)rootView.findViewById(R.id.startbutton));
+        initrec = new InitializeRecord();
         handler.postDelayed(countdown, 0);
+        handler.postDelayed(initrec,waittime);
         wl.acquire();
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD), SensorManager.SENSOR_DELAY_FASTEST);
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_FASTEST);
@@ -179,6 +204,7 @@ public class StartFragment extends Fragment implements SensorEventListener, View
             handler.removeCallbacks(countdown);
         mSensorManager.unregisterListener(this);
         recording=false;
+        started=false;
         wl.release();
         /**
          * the following try statement reads squat data and formats the list view with squats
@@ -227,17 +253,6 @@ public class StartFragment extends Fragment implements SensorEventListener, View
         if (event.sensor.getType() == Sensor.TYPE_GRAVITY)
             gravity = event.values;
 
-        /**
-         * the following if statement stops the countdown and causes a vibration
-         * indicating recording has started
-         */
-        if(System.currentTimeMillis()-waittime>timepressed && !started){
-            handler.removeCallbacks(countdown);
-            started = true;
-            Vibrator v = (Vibrator)context.getSystemService(context.VIBRATOR_SERVICE);
-            if(v.hasVibrator())
-                v.vibrate(1000);
-        }
         //this statement checks if arrays are not null and then caps the accelerometer data to eliminate bad data
         //one seems to be a good threshold
         if (geomagnetic != null && gravity != null && started ) {

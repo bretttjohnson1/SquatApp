@@ -54,11 +54,15 @@ public class StatsFragment extends Fragment {
 
             if(din.available()<12)
                 throw new DataFormatException();
+
+            Squat squats[] = Squat.readsquatdata(context,arraylength);
+            if(squats.length==0)
+                throw new DataFormatException();
+
             for(int a = 0;a<arraylength;a++) {
                 times[a]=din.readLong();
                 angles[a] = din.readInt();
             }
-
 
             /**
              * the following 7 lines of code put data in to an array of datapoints based off the interval
@@ -101,7 +105,7 @@ public class StatsFragment extends Fragment {
             graph.getViewport().setScrollable(true);
 
 
-            Squat squats[] = Squat.readsquatdata(context,arraylength);
+
             int averagedepth = 0;
             int averageupspeed = 0;
             int averagedownspeed = 0;
@@ -139,7 +143,7 @@ public class StatsFragment extends Fragment {
             e.printStackTrace();
         } catch (DataFormatException e) {
             e.printStackTrace();
-            Toast.makeText(context, "No Data Recorded Yet", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "No Squats Recorded Yet", Toast.LENGTH_SHORT).show();
         }
         return rootView;
     }

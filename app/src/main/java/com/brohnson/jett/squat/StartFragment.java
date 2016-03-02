@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.os.Vibrator;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +20,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.DataInputStream;
@@ -28,6 +28,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.zip.DataFormatException;
 
 /**
  * Created by brett on 2/9/16.
@@ -106,7 +107,7 @@ public class StartFragment extends Fragment implements SensorEventListener, View
         if(!recording) {
             startrecord();
         }
-        else if(recording && System.currentTimeMillis()-waittime>timepressed) {
+        else if(recording) {
             endrecord();
         }
     }
@@ -124,19 +125,23 @@ public class StartFragment extends Fragment implements SensorEventListener, View
         @Override
         public void run() {
             //this writes the time left rounded to 1 decimal
-            startbutton.setText("Starting in " +
-                    (float)((int)(-(System.currentTimeMillis()-waittime-timepressed))/100)/10);
-            handler.postDelayed(this,10);
+            startbutton.setText(getString(R.string.starting_in, (float) (-(System.currentTimeMillis() - waittime - timepressed)) / 1000));
+            handler.postDelayed(this, 10);
         }
     };
 
     //runnable for countdown
     Countdown countdown;
 
+    /**
+     * todo: make data clear happen after countdown
+     */
+
     private void startrecord(){
         /**
-         * this try statement begins recording data by clearing the list of current squats and the current squat data file
+         * this try statement begins recording data by clearing the current squat data file
          * it also resets the parity, past, started and arraylength variables
+         * it then sets the start button color red
          */
         try {
             filteredpitch=Float.MAX_VALUE;
@@ -144,9 +149,11 @@ public class StartFragment extends Fragment implements SensorEventListener, View
             past=false;
             started=false;
             arraylength=0;
+
             ListView squatlistview = (ListView)rootView.findViewById(R.id.squat_list_view);
             squatlistview.setAdapter(null);
 
+            ((Button)rootView.findViewById(R.id.startbutton)).setBackground(ContextCompat.getDrawable(context, R.drawable.start_button_cancel));
             fout =  context.openFileOutput("squats.dat",Context.MODE_PRIVATE);
             dout = new DataOutputStream(fout);
         } catch (FileNotFoundException e) {
@@ -168,18 +175,20 @@ public class StartFragment extends Fragment implements SensorEventListener, View
     }
     private void endrecord(){
         ((Button)rootView.findViewById(R.id.startbutton)).setText("Start");
-
+        if(System.currentTimeMillis()-waittime<timepressed)
+            handler.removeCallbacks(countdown);
         mSensorManager.unregisterListener(this);
         recording=false;
         wl.release();
         /**
          * the following try statement reads squat data and formats the list view with squats
          * it then writes the length variable for later use
+         * it returns the startbutton color to normal blue
          */
         try {
             dout.close();
+            ((Button)rootView.findViewById(R.id.startbutton)).setBackground(ContextCompat.getDrawable(context, R.drawable.start_button));
             squats =  Squat.readsquatdata(MainActivity.globalContext,arraylength);
-
             ListView squatlistview = (ListView)rootView.findViewById(R.id.squat_list_view);
             squatlistview.setAdapter(new StatsArrayAdapter(context, R.id.squat_list_view, squats));
             squatlistview.setOnItemClickListener(this);

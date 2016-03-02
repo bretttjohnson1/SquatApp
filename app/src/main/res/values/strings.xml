@@ -4,6 +4,6 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="help_text">prez buddon wait XDDD fur vabrit thin sguat XDDD!!</string>
-
+    <string name="starting_in">Starting in %.1f (press to cancel)</string>
     <string name="action_settings">Settings</string>
 </resources>

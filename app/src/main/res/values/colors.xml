@@ -13,5 +13,6 @@
     <color name="Blue100">#C5CAE9</color>
     <color name="Blue50">#E8EAF6</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="redText">#F44336</color>
+    <color name="Red600">#F44336</color>
+    <color name="Red800">#C62828</color>
 </resources>

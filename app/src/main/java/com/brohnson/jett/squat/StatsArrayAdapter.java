@@ -1,21 +1,14 @@
 package com.brohnson.jett.squat;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.view.LayoutInflater;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-
-import java.lang.reflect.Array;
-import java.util.zip.Inflater;
 
 /**
  * Created by brett on 2/14/16.
@@ -41,7 +34,7 @@ public class StatsArrayAdapter extends ArrayAdapter<Squat> implements AdapterVie
         if(squats[position].depth <= Squat.REQUIRED_DEPTH)
             ((TextView) rowview.findViewById(R.id.text_completed)).setTextColor(ContextCompat.getColor(context,R.color.Blue500));
         else
-            ((TextView) rowview.findViewById(R.id.text_completed)).setTextColor(ContextCompat.getColor(context,R.color.redText));
+            ((TextView) rowview.findViewById(R.id.text_completed)).setTextColor(ContextCompat.getColor(context,R.color.Red600));
 
         return rowview;
     }

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,6 @@ import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.zip.DataFormatException;
 
 /**
@@ -80,7 +78,7 @@ public class StatsFragment extends Fragment {
             /**
              * the following 21 lines of code set up the graph
              */
-            GraphView graph = (GraphView)rootView.findViewById(R.id.graph_squat);
+            GraphView graph = (GraphView)rootView.findViewById(R.id.graph_squat_individual);
             LineGraphSeries<DataPoint> linegraph = new LineGraphSeries<DataPoint>(data);
             linegraph.setColor(ContextCompat.getColor(context, R.color.Blue600));
             linegraph.setTitle("Angle");

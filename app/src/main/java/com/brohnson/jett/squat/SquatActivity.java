@@ -1,13 +1,10 @@
 package com.brohnson.jett.squat;
 
 import android.graphics.Color;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.jjoe64.graphview.GraphView;
@@ -23,7 +20,7 @@ public class SquatActivity extends AppCompatActivity {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.activity_squat);
       squat = (Squat)getIntent().getParcelableExtra("Squat");
-      GraphView graph = (GraphView)findViewById(R.id.graph_squat);
+      GraphView graph = (GraphView)findViewById(R.id.graph_squat_individual);
       int interval = 30;
 
       DataPoint data[] = new DataPoint[(squat.end-squat.start)/interval+1];

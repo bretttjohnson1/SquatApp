@@ -6,7 +6,7 @@
     <com.jjoe64.graphview.GraphView
         android:layout_width="match_parent"
         android:layout_height="200dip"
-        android:id="@+id/graph_squat"
+        android:id="@+id/graph_squat_individual"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_marginRight="5dp"

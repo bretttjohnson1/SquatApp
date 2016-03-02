@@ -7,7 +7,7 @@
     <com.jjoe64.graphview.GraphView
         android:layout_width="match_parent"
         android:layout_height="200dip"
-        android:id="@+id/graph_squat"
+        android:id="@+id/graph_squat_individual"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="@dimen/activity_vertical_margin"
@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/individual_stats_listview"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/graph_squat"
+        android:layout_below="@+id/graph_squat_individual"
         android:layout_marginTop="20dp" />
 
 </RelativeLayout>

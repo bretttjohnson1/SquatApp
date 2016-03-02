@@ -113,10 +113,10 @@ public class StatsFragment extends Fragment {
                 averageupspeed+=squats[a].averageupspeed;
                 averagedownspeed+=squats[a].averagedownspeed;
                 averagetimedownunder+=(squats[a].endtimeunder-squats[a].starttimeunder);
-                averagepause+=(squats[a].endtimeunder-squats[a].starttimeunder);
+                averagepause+=times[squats[a].end]-times[squats[a].start];
                 if(a<squats.length-1){
-                    if((squats[a+1].starttimeunder-squats[a].endtimeunder)>maxpause)
-                        maxpause=squats[a+1].starttimeunder-squats[a].endtimeunder;
+                    if((times[squats[a+1].start]-times[squats[a].end])>maxpause)
+                        maxpause=times[squats[a+1].start]-times[squats[a].end];
 
                 }
             }
@@ -129,7 +129,7 @@ public class StatsFragment extends Fragment {
             ListView listview = (ListView)rootView.findViewById(R.id.stats_listView);
             int types[] = new int[]{1,0,0,2,2,2};
             int values[] = new int[]{averagedepth,averageupspeed,averagedownspeed,averagetimedownunder,(int)averagepause,(int)maxpause};
-            String names[] = new String[]{"Average Depth","Average Upward Angular Speed","Average Downward Angular Speed","Average Time At Bottom","Average Pause Time","Longest Pause Time"};
+            String names[] = new String[]{"Average Depth","Average Upward Angular Speed","Average Downward Angular Speed","Average Time At Bottom","Average Pause Between Squats","Longest Pause Between Squats"};
             listview.setAdapter(new SquatStatsArrayAdapter(context, R.id.individual_stats_listview, names, values,types));
 
 

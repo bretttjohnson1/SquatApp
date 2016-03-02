@@ -68,8 +68,5 @@ public class SquatActivity extends AppCompatActivity {
       String names[] = new String[]{"Depth","Average Upward Angular Speed","Average Downward Angular Speed","Max Upward Angular Speed","Max Downward Angular Speed","Time At Bottom"};
       listview.setAdapter(new SquatStatsArrayAdapter(this,R.id.individual_stats_listview,names,values,types));
 
-
-
-
    }
 }

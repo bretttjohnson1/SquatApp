@@ -2,8 +2,10 @@ package com.brohnson.jett.squat;
 
 import android.app.FragmentManager;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -11,10 +13,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements AdapterView.OnItemClickListener {
 
+    //default startwindow (0 is placeholder)
+    int defaultpostition = 0;
+    Integer ids[];
     public static Context globalContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +37,12 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        ListView listview = (ListView)findViewById(R.id.nav_view);
+        ids = new Integer[]{R.string.check_form,R.string.stats,R.string.help};
+        listview.setAdapter(new MenuAdapter(this,R.id.nav_view,new Integer[]{R.string.check_form,R.string.stats,R.string.help}
+                ,new Integer[]{R.drawable.ic_start,R.drawable.ic_stats,R.drawable.ic_help}));
+        listview.setOnItemClickListener(this);
+
         globalContext=this;
     }
 
@@ -65,36 +77,42 @@ public class MainActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
-
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
+    public void onItemClick(AdapterView<?> parent, View view, int position, long idofcontainer) {
+        int id = ids[position];
+        defaultpostition=position;
+        for(int i=0; i<parent.getChildCount(); i++)
+        {
+            if(i == position)
+            {
+                parent.getChildAt(i).setBackgroundColor(ContextCompat.getColor(this,R.color.Blue100));
+            }
+            else
+            {
+                parent.getChildAt(i).setBackgroundColor(Color.TRANSPARENT);
+            }
 
-        if (id == R.id.nav_checksquat) {
+        }
+
+        if (id == R.string.check_form) {
 
             StartFragment frag = new StartFragment();
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.main, frag).commit();
 
-        } else if (id == R.id.nav_stats) {
+        } else if (id == R.string.stats) {
 
             StatsFragment frag = new StatsFragment();
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.main, frag).commit();
-        } else if (id == R.id.nav_help) {
+        } else if (id == R.string.help) {
 
-            StartFragment frag = new StartFragment();
+            HelpFragment frag = new HelpFragment();
             FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.popBackStack();
-            //fragmentManager.beginTransaction().replace(R.id.main, R.id.main).commit();
+            fragmentManager.beginTransaction().replace(R.id.main, frag).commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout2);
         drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
-
-
 }

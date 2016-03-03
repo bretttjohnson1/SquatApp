@@ -55,7 +55,7 @@ public class StatsFragment extends Fragment {
 
             Squat squats[] = Squat.readsquatdata(context,arraylength);
             if(squats.length==0)
-                throw new DataFormatException();
+                return rootView;
 
             for(int a = 0;a<arraylength;a++) {
                 times[a]=din.readLong();

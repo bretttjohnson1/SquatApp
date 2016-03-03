@@ -57,8 +57,8 @@ public class Squat implements Parcelable{
             }
         }
 
-        for(int a = start;a<end-100;a++){
-            int speed = (angles[a+100]-angles[a])*1000/(int)(times[a+100]-times[a]);
+        for(int a = start;a<end-10;a++){
+            int speed = (angles[a+10]-angles[a])*1000/(int)(times[a+10]-times[a]);
             if(speed>maxupspeed)
                 maxupspeed=speed;
             if(speed<maxdropspeed)

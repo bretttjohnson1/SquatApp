@@ -66,7 +66,7 @@ public class StatsFragment extends Fragment {
              * the following 7 lines of code put data in to an array of datapoints based off the interval
              * ie: 100 means it reads every 100 points
              */
-            final int interval=100;
+            final int interval=1;
             DataPoint data[] = new DataPoint[times.length/interval+1];
             if(times.length%interval==0){
                 data = new DataPoint[times.length/interval];

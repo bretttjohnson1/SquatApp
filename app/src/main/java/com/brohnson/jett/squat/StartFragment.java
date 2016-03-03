@@ -94,6 +94,7 @@ public class StartFragment extends Fragment implements SensorEventListener, View
     //array of squats to be filled
     Squat squats[];
     int arraylength=0;
+    int count=0;
     //streams for writing files
     DataOutputStream dout;
     FileOutputStream fout;
@@ -150,7 +151,7 @@ public class StartFragment extends Fragment implements SensorEventListener, View
                 parity=0;
                 past=false;
                 arraylength=0;
-
+                count=0;
                 ListView squatlistview = (ListView)rootView.findViewById(R.id.squat_list_view);
                 squatlistview.setAdapter(null);
 
@@ -223,6 +224,7 @@ public class StartFragment extends Fragment implements SensorEventListener, View
             DataOutputStream dout = new DataOutputStream(fout);
             dout.writeInt(arraylength);
             arraylength=0;
+            count=0;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -245,7 +247,6 @@ public class StartFragment extends Fragment implements SensorEventListener, View
     boolean past = false;
     //whether the 5 second timer has past
     boolean started = false;
-
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD)
@@ -277,14 +278,17 @@ public class StartFragment extends Fragment implements SensorEventListener, View
                 /**
                  * this try statement writes to the squat data
                  */
-                try {
-                    dout.writeLong(System.currentTimeMillis());
-                    dout.writeInt((int) (-90 * filteredpitch / Math.PI * 2) * parity);
-                    arraylength++;
+                if (count % 50 ==0 ){
+                    try {
+                        dout.writeLong(System.currentTimeMillis());
+                        dout.writeInt((int) (-90 * filteredpitch / Math.PI * 2) * parity);
+                        arraylength++;
 
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
+                count++;
 
 
                 /**

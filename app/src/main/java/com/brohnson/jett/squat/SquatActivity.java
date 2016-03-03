@@ -21,7 +21,7 @@ public class SquatActivity extends AppCompatActivity {
       setContentView(R.layout.activity_squat);
       squat = (Squat)getIntent().getParcelableExtra("Squat");
       GraphView graph = (GraphView)findViewById(R.id.graph_squat_individual);
-      int interval = 30;
+      final int interval = 1;
 
       DataPoint data[] = new DataPoint[(squat.end-squat.start)/interval+1];
       if((squat.end-squat.start)%interval==0){

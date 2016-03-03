@@ -31,6 +31,7 @@ public class StatsArrayAdapter extends ArrayAdapter<Squat> implements AdapterVie
         else
             ((TextView)rowview.findViewById(R.id.text_completed)).setText("Failed");
         ((TextView)rowview.findViewById(R.id.text_angle)).setText("Depth Angle: " + squats[position].depth);
+
         if(squats[position].depth <= Squat.REQUIRED_DEPTH)
             ((TextView) rowview.findViewById(R.id.text_completed)).setTextColor(ContextCompat.getColor(context,R.color.Blue500));
         else

@@ -6,4 +6,7 @@
     <string name="help_text">prez buddon wait XDDD fur vabrit thin sguat XDDD!!</string>
     <string name="starting_in">Starting in %.1f (press to cancel)</string>
     <string name="action_settings">Settings</string>
+    <string name="check_form">Check Form</string>
+    <string name="stats">Stats</string>
+    <string name="help">Help</string>
 </resources>

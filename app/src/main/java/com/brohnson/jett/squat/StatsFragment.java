@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -128,11 +129,11 @@ public class StatsFragment extends Fragment {
             averagedownspeed/=squats.length;
             averagetimedownunder/=squats.length;
 
-            ListView listview = (ListView)rootView.findViewById(R.id.stats_listView);
+            GridView listview = (GridView)rootView.findViewById(R.id.stats_gridView);
             int types[] = new int[]{1,0,0,2,2,2};
             int values[] = new int[]{averagedepth,averageupspeed,averagedownspeed,averagetimedownunder,(int)averagepause,(int)maxpause};
-            String names[] = new String[]{"Average Depth","Average Upward Angular Speed","Average Downward Angular Speed","Average Time At Bottom","Average Pause Between Squats","Longest Pause Between Squats"};
-            listview.setAdapter(new SquatStatsArrayAdapter(context, R.id.individual_stats_listview, names, values,types));
+            String names[] = new String[]{"Average Depth","Average Upward\n Angular Speed","Average Downward\n  Angular Speed","Average Time\n  At Bottom"," Average Pause\nBetween Squats"," Longest Pause\nBetween Squats"};
+            listview.setAdapter(new SquatStatsArrayAdapter(context, names, values,types));
 
 
         } catch (FileNotFoundException e) {

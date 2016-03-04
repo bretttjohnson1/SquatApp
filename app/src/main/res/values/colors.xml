@@ -16,5 +16,8 @@
     <color name="Red600">#F44336</color>
     <color name="Red800">#C62828</color>
     <color name="BlackText">#1b1b1b</color>
-
+    <color name="Indigo">#353e47</color>
+    <color name="LightIndigo">#3b4c5c</color>
+    <color name="DarkIndigo">#313131</color>
+    <color name="WhiteText">#deecf9</color>
 </resources>

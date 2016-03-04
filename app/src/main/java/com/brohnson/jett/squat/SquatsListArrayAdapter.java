@@ -13,10 +13,10 @@ import android.widget.TextView;
 /**
  * Created by brett on 2/14/16.
  */
-public class StatsArrayAdapter extends ArrayAdapter<Squat> implements AdapterView.OnItemClickListener {
+public class SquatsListArrayAdapter extends ArrayAdapter<Squat> implements AdapterView.OnItemClickListener {
     Squat[] squats;
     Context context;
-    public StatsArrayAdapter(Context context, int resource, Squat[] objects) {
+    public SquatsListArrayAdapter(Context context, int resource, Squat[] objects) {
         super(context, resource, objects);
         this.context= context;
         squats=objects;
@@ -33,9 +33,9 @@ public class StatsArrayAdapter extends ArrayAdapter<Squat> implements AdapterVie
         ((TextView)rowview.findViewById(R.id.text_angle)).setText("Depth Angle: " + squats[position].depth);
 
         if(squats[position].depth <= Squat.REQUIRED_DEPTH)
-            ((TextView) rowview.findViewById(R.id.text_completed)).setTextColor(ContextCompat.getColor(context,R.color.Blue500));
+            ((TextView) rowview.findViewById(R.id.text_completed)).setTextColor(ContextCompat.getColor(context,R.color.Blue800));
         else
-            ((TextView) rowview.findViewById(R.id.text_completed)).setTextColor(ContextCompat.getColor(context,R.color.Red600));
+            ((TextView) rowview.findViewById(R.id.text_completed)).setTextColor(ContextCompat.getColor(context,R.color.Red800));
 
         return rowview;
     }

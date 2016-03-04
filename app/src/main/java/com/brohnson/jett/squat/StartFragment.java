@@ -28,7 +28,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.zip.DataFormatException;
 
 /**
  * Created by brett on 2/9/16.
@@ -70,7 +69,7 @@ public class StartFragment extends Fragment implements SensorEventListener, View
                 Log.d("length", arraylength+"");
                 squats = Squat.readsquatdata(MainActivity.globalContext, arraylength);
                 ListView squatlistview = (ListView)rootView.findViewById(R.id.squat_list_view);
-                squatlistview.setAdapter(new StatsArrayAdapter(context, R.id.squat_list_view, squats));
+                squatlistview.setAdapter(new SquatsListArrayAdapter(context, R.id.squat_list_view, squats));
                 squatlistview.setOnItemClickListener(this);
             }
         } catch (FileNotFoundException e) {
@@ -217,7 +216,7 @@ public class StartFragment extends Fragment implements SensorEventListener, View
             ((Button)rootView.findViewById(R.id.startbutton)).setBackground(ContextCompat.getDrawable(context, R.drawable.start_button));
             squats =  Squat.readsquatdata(MainActivity.globalContext,arraylength);
             ListView squatlistview = (ListView)rootView.findViewById(R.id.squat_list_view);
-            squatlistview.setAdapter(new StatsArrayAdapter(context, R.id.squat_list_view, squats));
+            squatlistview.setAdapter(new SquatsListArrayAdapter(context, R.id.squat_list_view, squats));
             squatlistview.setOnItemClickListener(this);
 
             FileOutputStream fout = context.openFileOutput("length.dat",Context.MODE_PRIVATE);

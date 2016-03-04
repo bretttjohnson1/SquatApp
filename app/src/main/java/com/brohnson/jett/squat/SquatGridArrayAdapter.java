@@ -53,9 +53,11 @@ public class SquatGridArrayAdapter extends BaseAdapter {
             case (1):
                 value.setText(values[position]+ "" + (char) 0x00B0);
                 break;
-            default:
+            case (0):
                 value.setText(Math.abs(values[position]) + "" + (char) 0x00B0 + "/s");
                 break;
+            default:
+                value.setText(values[position]+"");
         };
         return rowview;
     }

@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity
         {
             if(i == position)
             {
-                parent.getChildAt(i).setBackgroundColor(ContextCompat.getColor(this,R.color.Blue100));
+                parent.getChildAt(i).setBackgroundColor(ContextCompat.getColor(this,R.color.LightIndigo));
             }
             else
             {

@@ -43,7 +43,7 @@
         <ListView
             android:layout_width="300dp"
             android:layout_height="match_parent"
-            android:background="#FFFFFFFF"
+            android:background="@color/DarkGrey"
             android:layout_gravity="left"
             android:id="@+id/nav_view"
             android:divider="@null"

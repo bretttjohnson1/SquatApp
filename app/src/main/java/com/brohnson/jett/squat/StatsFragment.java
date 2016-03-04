@@ -88,7 +88,7 @@ public class StatsFragment extends Fragment {
             zero[1] = new DataPoint(times[times.length-1]-times[0]+500,Squat.REQUIRED_DEPTH);
             LineGraphSeries<DataPoint> zeroline = new LineGraphSeries<DataPoint>(zero);
             zeroline.setTitle("Required Depth (" + Squat.REQUIRED_DEPTH + (char) 0x00B0 + ")");
-            zeroline.setColor(Color.RED);
+            zeroline.setColor(ContextCompat.getColor(context,R.color.SoftRed));
             graph.addSeries(zeroline);
             graph.getViewport().setYAxisBoundsManual(true);
             graph.getViewport().setXAxisBoundsManual(true);
@@ -101,10 +101,10 @@ public class StatsFragment extends Fragment {
             graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
             graph.getViewport().setScalable(true);
             graph.getViewport().setScrollable(true);
-            graph.getGridLabelRenderer().setGridColor(ContextCompat.getColor(context, R.color.WhiteText));
-            graph.getGridLabelRenderer().setHorizontalLabelsColor(ContextCompat.getColor(context, R.color.WhiteText));
-            graph.getGridLabelRenderer().setVerticalLabelsColor(ContextCompat.getColor(context, R.color.WhiteText));
-            graph.getLegendRenderer().setTextColor(ContextCompat.getColor(context, R.color.WhiteText));
+            graph.getGridLabelRenderer().setGridColor(ContextCompat.getColor(context, R.color.GreyText));
+            graph.getGridLabelRenderer().setHorizontalLabelsColor(ContextCompat.getColor(context, R.color.GreyText));
+            graph.getGridLabelRenderer().setVerticalLabelsColor(ContextCompat.getColor(context, R.color.GreyText));
+            graph.getLegendRenderer().setTextColor(ContextCompat.getColor(context, R.color.GreyText));
             graph.getGridLabelRenderer().reloadStyles();
 
 

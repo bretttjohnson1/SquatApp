@@ -15,7 +15,7 @@ import java.util.ArrayList;
  */
 public class Squat implements Parcelable{
     public static int REQUIRED_DEPTH = 3;
-    public static int MINIMUM_START_DEPTH=60;
+    public static int MINIMUM_START_DEPTH=50;
 
     boolean completed;
     int depth,start,end;
@@ -134,10 +134,10 @@ public class Squat implements Parcelable{
         for(int a = 0; a<arraylength;a++){
             times[a]=din.readLong();
             angles[a]=din.readInt();
-            if(angles[a]<60 && !below) {
+            if(angles[a]<MINIMUM_START_DEPTH && !below) {
                 below = true;
                 startpts.add(a);
-            }else if(angles[a]>60 && below){
+            }else if(angles[a]>MINIMUM_START_DEPTH && below){
                 below  = false;
                 endpts.add(a);
             }

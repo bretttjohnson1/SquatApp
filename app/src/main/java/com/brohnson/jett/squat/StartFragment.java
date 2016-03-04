@@ -69,11 +69,6 @@ public class StartFragment extends Fragment implements SensorEventListener, View
                 arraylength = din.readInt();
                 Log.d("length", arraylength+"");
                 squats = Squat.readsquatdata(MainActivity.globalContext, arraylength);
-                GridView gridview = (GridView)rootView.findViewById(R.id.stats_gridview);
-                int types[] = new int[]{1,1};
-                int values[] = new int[]{squats.length, squats.length};
-                String names[] = new String[]{"Average Depth","Average Upward\n Angular Speed"};
-                gridview.setAdapter(new SquatGridArrayAdapter(context, names, values,types));
                 ListView squatlistview = (ListView)rootView.findViewById(R.id.squat_list_view);
                 squatlistview.setAdapter(new SquatsListArrayAdapter(context, R.id.squat_list_view, squats));
                 squatlistview.setOnItemClickListener(this);
@@ -83,6 +78,7 @@ public class StartFragment extends Fragment implements SensorEventListener, View
         } catch (IOException e) {
             e.printStackTrace();
         }
+        gengrid(squats);
 
 
         return rootView;
@@ -108,6 +104,24 @@ public class StartFragment extends Fragment implements SensorEventListener, View
     //is it recording
     private boolean recording = false;
 
+    private void gengrid(Squat squats[]){
+        int types[] = new int[]{1, 3};
+        int values[] = new int[2];
+        String names[] = new String[]{"Average Depth", "Total Squats"};
+        GridView gridview = (GridView) rootView.findViewById(R.id.stats_gridview);
+        if(squats!=null)
+        if(squats.length!=0) {
+            int averagedepth = 0;
+            for (int a = 0; a < squats.length; a++) {
+                averagedepth += squats[a].depth;
+            }
+            averagedepth /= squats.length;
+            values = new int[]{averagedepth, squats.length};
+        }
+        gridview.setAdapter(new SquatGridArrayAdapter(context, names, values, types));
+
+    }
+
 
     public void record(View view){
         if(!recording) {
@@ -121,6 +135,7 @@ public class StartFragment extends Fragment implements SensorEventListener, View
         }
         else if(recording) {
             endrecord();
+            gengrid(squats);
         }
     }
 

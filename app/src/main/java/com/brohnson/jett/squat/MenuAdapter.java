@@ -29,6 +29,7 @@ public class MenuAdapter extends ArrayAdapter<Integer> {
 
         ImageView iv = (ImageView)rowview.findViewById(R.id.menu_image);
         TextView tv = (TextView)rowview.findViewById(R.id.menu_title);
+        tv.setTextColor(ContextCompat.getColor(context,R.color.WhiteText));
         iv.setImageResource(imageids[position]);
         tv.setText(context.getString(stringids[position]));
 

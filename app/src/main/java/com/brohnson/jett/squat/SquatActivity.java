@@ -57,10 +57,10 @@ public class SquatActivity extends AppCompatActivity {
         graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
         graph.getViewport().setScalable(true);
         graph.getViewport().setScrollable(true);
-        graph.getGridLabelRenderer().setGridColor(ContextCompat.getColor(this, R.color.WhiteText));
-        graph.getGridLabelRenderer().setHorizontalLabelsColor(ContextCompat.getColor(this, R.color.WhiteText));
-        graph.getGridLabelRenderer().setVerticalLabelsColor(ContextCompat.getColor(this, R.color.WhiteText));
-        graph.getLegendRenderer().setTextColor(ContextCompat.getColor(this, R.color.WhiteText));
+        graph.getGridLabelRenderer().setGridColor(ContextCompat.getColor(this, R.color.GreyText));
+        graph.getGridLabelRenderer().setHorizontalLabelsColor(ContextCompat.getColor(this, R.color.GreyText));
+        graph.getGridLabelRenderer().setVerticalLabelsColor(ContextCompat.getColor(this, R.color.GreyText));
+        graph.getLegendRenderer().setTextColor(ContextCompat.getColor(this, R.color.GreyText));
         graph.getGridLabelRenderer().reloadStyles();
 
 

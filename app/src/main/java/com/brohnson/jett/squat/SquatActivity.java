@@ -69,7 +69,7 @@ public class SquatActivity extends AppCompatActivity {
         int types[] = new int[]{1,0,0,0,0,2};
         int values[] = new int[]{squat.depth, squat.averageupspeed,squat.averagedownspeed,squat.maxupspeed,squat.maxdropspeed,(int)(squat.endtimeunder-squat.starttimeunder)};
         String names[] = new String[]{"Depth","Average Upward\n Angular Speed","Average Downward\n   Angular Speed"," Max Upward\nAngular Speed","Max Downward\n Angular Speed","Time At Bottom"};
-        listview.setAdapter(new SquatStatsArrayAdapter(this,names,values,types));
+        listview.setAdapter(new SquatGridArrayAdapter(this,names,values,types));
 
     }
 }

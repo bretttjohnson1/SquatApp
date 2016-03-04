@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">@color/LightIndigo</color>
+    <color name="colorPrimaryDark">@color/Indigo</color>
     <color name="Blue900">#1A237E</color>
     <color name="Blue800">#283593</color>
     <color name="Blue700">#303F9F</color>
@@ -22,4 +22,6 @@
     <color name="WhiteText">#deecf9</color>
     <color name="SoftRed">#d44b4b</color>
     <color name="DarkIndigo">#31343a</color>
+    <color name="LightBlue">#4c9eea</color>
+    <color name="LessLightBlue">#4187c8</color>
 </resources>

@@ -10,12 +10,12 @@ import android.widget.TextView;
 /**
  * Created by brett on 2/20/16.
  */
-public class SquatStatsArrayAdapter extends BaseAdapter {
+public class SquatGridArrayAdapter extends BaseAdapter {
     int values[];
     String  names[];
     int types[];
     Context context;
-    public SquatStatsArrayAdapter(Context context, String names[], int values[], int types[]) {
+    public SquatGridArrayAdapter(Context context, String names[], int values[], int types[]) {
         this.values=values;
         this.names = names;
         this.context=context;
@@ -44,7 +44,6 @@ public class SquatStatsArrayAdapter extends BaseAdapter {
         View rowview = inflate.inflate(R.layout.squat_stats_gridview_individual, null, true);
         TextView name = (TextView)rowview.findViewById(R.id.name);
         TextView value = (TextView)rowview.findViewById(R.id.value);
-
         name.setText(names[position]);
 
         switch (types[position]) {

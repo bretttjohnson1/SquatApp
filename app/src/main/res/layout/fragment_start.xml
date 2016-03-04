@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/DarkIndigo">
     <Button
         android:layout_width="match_parent"
         android:layout_height="80dp"
@@ -12,17 +13,34 @@
         android:textColor="#FFEFEFEF"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_below="@+id/frame"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="20dp" />
 
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/squat_list_view"
         android:headerDividersEnabled="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_above="@+id/startbutton" />
+        android:layout_below="@+id/startbutton"
+        android:layout_alignParentStart="true"
+        android:background="@color/Indigo"
+        android:layout_marginTop="20dp" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/LightIndigo"
+        android:id="@+id/frame"
+        android:layout_marginTop="10dp">
+        <GridView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:numColumns="2"
+            android:id="@+id/stats_gridview"
+            android:layout_marginTop="2dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="2dp" />
+    </FrameLayout>
 
 
 </RelativeLayout>

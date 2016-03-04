@@ -2,12 +2,14 @@ package com.brohnson.jett.squat;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.view.LayoutInflater;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -26,16 +28,22 @@ public class SquatsListArrayAdapter extends ArrayAdapter<Squat> implements Adapt
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflate = LayoutInflater.from(context);
         View rowview = inflate.inflate(R.layout.squat_list_item, null, true);
+
+        rowview.setBackgroundColor((position % 2 == 0) ? ContextCompat.getColor(context, R.color.LightIndigo) : ContextCompat.getColor(context, R.color.Indigo));
+
         if(squats[position].depth <= Squat.REQUIRED_DEPTH)
             ((TextView)rowview.findViewById(R.id.text_completed)).setText("Completed");
         else
             ((TextView)rowview.findViewById(R.id.text_completed)).setText("Failed");
         ((TextView)rowview.findViewById(R.id.text_angle)).setText("Depth Angle: " + squats[position].depth);
-
+        ImageView image = (ImageView)rowview.findViewById(R.id.imageView);
+        image.setScaleX(.8f);
+        image.setScaleY(.8f);
         if(squats[position].depth <= Squat.REQUIRED_DEPTH)
-            ((TextView) rowview.findViewById(R.id.text_completed)).setTextColor(ContextCompat.getColor(context,R.color.Blue800));
+            image.setBackground(ContextCompat.getDrawable(context, R.drawable.check));
         else
-            ((TextView) rowview.findViewById(R.id.text_completed)).setTextColor(ContextCompat.getColor(context,R.color.Red800));
+            image.setBackground(ContextCompat.getDrawable(context, R.drawable.cross));
+
 
         return rowview;
     }

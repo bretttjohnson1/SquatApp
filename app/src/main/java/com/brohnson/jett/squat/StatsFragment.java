@@ -137,7 +137,7 @@ public class StatsFragment extends Fragment {
             int types[] = new int[]{1,0,0,2,2,2};
             int values[] = new int[]{averagedepth,averageupspeed,averagedownspeed,averagetimedownunder,(int)averagepause,(int)maxpause};
             String names[] = new String[]{"Average Depth","Average Upward\n Angular Speed","Average Downward\n  Angular Speed","Average Time\n  At Bottom"," Average Pause\nBetween Squats"," Longest Pause\nBetween Squats"};
-            listview.setAdapter(new SquatStatsArrayAdapter(context, names, values,types));
+            listview.setAdapter(new SquatGridArrayAdapter(context, names, values,types));
 
 
         } catch (FileNotFoundException e) {

@@ -18,6 +18,8 @@
     <color name="BlackText">#1b1b1b</color>
     <color name="Indigo">#353e47</color>
     <color name="LightIndigo">#3b4c5c</color>
-    <color name="DarkIndigo">#313131</color>
+    <color name="DarkGrey">#313131</color>
     <color name="WhiteText">#deecf9</color>
+    <color name="SoftRed">#d44b4b</color>
+    <color name="DarkIndigo">#31343a</color>
 </resources>

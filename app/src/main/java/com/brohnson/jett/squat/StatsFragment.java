@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
@@ -34,7 +33,7 @@ public class StatsFragment extends Fragment {
                              Bundle savedInstanceState) {
         try {
             context=MainActivity.globalContext;
-            rootView = inflater.inflate(R.layout.fragment_stats, container, false);
+            rootView = inflater.inflate(R.layout.activity_squat_stats, container, false);
             /**
              * the following 18 lines of code read the raw squat data
              * and put it into a graphable form and array form
@@ -79,9 +78,9 @@ public class StatsFragment extends Fragment {
             /**
              * the following 21 lines of code set up the graph
              */
-            GraphView graph = (GraphView)rootView.findViewById(R.id.graph_squat_individual);
+            GraphView graph = (GraphView)rootView.findViewById(R.id.graph_squat);
             LineGraphSeries<DataPoint> linegraph = new LineGraphSeries<DataPoint>(data);
-            linegraph.setColor(ContextCompat.getColor(context, R.color.Blue600));
+            linegraph.setColor(ContextCompat.getColor(context, R.color.Blue200));
             linegraph.setTitle("Angle");
             graph.addSeries(linegraph);
             DataPoint[] zero = new DataPoint[2];
@@ -102,6 +101,11 @@ public class StatsFragment extends Fragment {
             graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
             graph.getViewport().setScalable(true);
             graph.getViewport().setScrollable(true);
+            graph.getGridLabelRenderer().setGridColor(ContextCompat.getColor(context, R.color.WhiteText));
+            graph.getGridLabelRenderer().setHorizontalLabelsColor(ContextCompat.getColor(context, R.color.WhiteText));
+            graph.getGridLabelRenderer().setVerticalLabelsColor(ContextCompat.getColor(context, R.color.WhiteText));
+            graph.getLegendRenderer().setTextColor(ContextCompat.getColor(context, R.color.WhiteText));
+            graph.getGridLabelRenderer().reloadStyles();
 
 
 
@@ -129,7 +133,7 @@ public class StatsFragment extends Fragment {
             averagedownspeed/=squats.length;
             averagetimedownunder/=squats.length;
 
-            GridView listview = (GridView)rootView.findViewById(R.id.stats_gridView);
+            GridView listview = (GridView)rootView.findViewById(R.id.stats_gridview);
             int types[] = new int[]{1,0,0,2,2,2};
             int values[] = new int[]{averagedepth,averageupspeed,averagedownspeed,averagetimedownunder,(int)averagepause,(int)maxpause};
             String names[] = new String[]{"Average Depth","Average Upward\n Angular Speed","Average Downward\n  Angular Speed","Average Time\n  At Bottom"," Average Pause\nBetween Squats"," Longest Pause\nBetween Squats"};

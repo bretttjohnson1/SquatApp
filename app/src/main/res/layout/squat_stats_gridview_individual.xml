@@ -10,9 +10,8 @@
         android:layout_above="@+id/value"
         android:orientation="vertical"
         android:layout_centerHorizontal="true"
-        android:background="@color/DarkIndigo"
+        android:background="@color/DarkGrey"
         android:layout_marginLeft="1dp"
-        android:layout_marginTop="2dp"
         android:layout_marginRight="1dp"
         android:layout_marginBottom="2dp">
 

@@ -40,7 +40,8 @@ public class StartFragment extends Fragment implements SensorEventListener, View
     View rootView;
     Context context;
     //time in ms until recording starts after button press
-    final long waittime = 5000;
+    public static int COUNTDOWN = 10;
+    long waittime = COUNTDOWN*1000;
 
 
     @Override

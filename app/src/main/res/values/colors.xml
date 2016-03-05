@@ -12,7 +12,7 @@
     <color name="Blue200">#9FA8DA</color>
     <color name="Blue100">#C5CAE9</color>
     <color name="Blue50">#E8EAF6</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">@color/LightBlue</color>
     <color name="Red600">#F44336</color>
     <color name="Red800">#C62828</color>
     <color name="BlackText">#1b1b1b</color>

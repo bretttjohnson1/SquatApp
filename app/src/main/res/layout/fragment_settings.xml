@@ -1,0 +1,87 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.brohnson.jett.squat.SettingsFragment"
+    android:background="@color/DarkGrey">
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="70dp"
+        android:text="Save"
+        android:id="@+id/save_button"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/start_button"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:textColor="@color/WhiteText" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_margin="5dp"
+        android:background="@color/Indigo"
+        android:id="@+id/relativeLayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Required Depth:"
+            android:id="@+id/reqdepth_time_name"
+            android:textColor="@color/WhiteText"
+            android:textSize="35dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_margin="5dp" />
+
+        <EditText
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:inputType="numberSigned"
+            android:ems="10"
+            android:id="@+id/required_depth_edit_text"
+            android:layout_below="@+id/reqdepth_time_name"
+            android:layout_alignParentStart="true"
+            android:layout_margin="8dp"
+            android:textColor="@color/LightBlue" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/Indigo"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_below="@+id/relativeLayout"
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Countdown (sec):"
+            android:id="@+id/count_time_name"
+            android:textColor="@color/WhiteText"
+            android:textSize="35dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_margin="5dp" />
+
+        <EditText
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:inputType="numberSigned"
+            android:ems="10"
+            android:id="@+id/countdown_edit_text"
+            android:layout_below="@+id/count_time_name"
+            android:layout_alignParentStart="true"
+            android:layout_margin="8dp"
+            android:textColor="@color/LightBlue" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

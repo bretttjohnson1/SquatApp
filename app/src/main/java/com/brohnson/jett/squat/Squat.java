@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * Created by brett on 2/14/16.
  */
 public class Squat implements Parcelable{
-    public static int REQUIRED_DEPTH = 3;
+    public static int REQUIRED_DEPTH = 5;
     public static int MINIMUM_START_DEPTH=50;
 
     boolean completed;

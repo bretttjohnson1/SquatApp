@@ -2,6 +2,7 @@ package com.brohnson.jett.squat;
 
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -30,17 +31,22 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        SharedPreferences sp = getPreferences(Context.MODE_PRIVATE);
+        Squat.REQUIRED_DEPTH = sp.getInt(getString(R.string.REQUIRED_DEPTH),Squat.REQUIRED_DEPTH);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout2);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        HelpFragment frag = new HelpFragment();
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.main, frag).commit();
+
         ListView listview = (ListView)findViewById(R.id.nav_view);
-        ids = new Integer[]{R.string.check_form,R.string.stats,R.string.help};
-        listview.setAdapter(new MenuAdapter(this,R.id.nav_view,new Integer[]{R.string.check_form,R.string.stats,R.string.help}
-                ,new Integer[]{R.drawable.ic_start,R.drawable.ic_stats,R.drawable.ic_help}));
+        ids = new Integer[]{R.string.check_form,R.string.stats,R.string.settings, R.string.help};
+        listview.setAdapter(new MenuAdapter(this,R.id.nav_view,ids
+                ,new Integer[]{R.drawable.ic_start,R.drawable.ic_stats,R.drawable.ic_menu_manage,R.drawable.ic_help}));
         listview.setOnItemClickListener(this);
 
         globalContext=this;
@@ -103,6 +109,11 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.string.stats) {
 
             StatsFragment frag = new StatsFragment();
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.main, frag).commit();
+        } else if (id == R.string.settings) {
+
+            SettingsFragment frag = new SettingsFragment(this);
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.main, frag).commit();
         } else if (id == R.string.help) {

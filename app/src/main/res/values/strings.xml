@@ -24,4 +24,5 @@
 
     <string name="REQUIRED_DEPTH">REQUIRED_DEPTH</string>
     <string name="COUNTDOWN">COUNTDOWN</string>
+    <string name="VIBRATEONBOTTOM">VIBRATEONBOTTOM</string>
 </resources>

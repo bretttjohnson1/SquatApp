@@ -7,13 +7,17 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 
 public class SettingsFragment extends Fragment implements View.OnClickListener{
@@ -31,81 +35,75 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
         rootView = inflater.inflate(R.layout.fragment_settings, container, false);
         int reqdepth=Squat.REQUIRED_DEPTH;
         int timer=StartFragment.COUNTDOWN;
+        boolean vibrate = StartFragment.VIBRATEATBOTTOM;
 
         SharedPreferences sp = mainactivity.getPreferences(Context.MODE_PRIVATE);
-        reqdepth = sp.getInt(mainactivity.getString(R.string.REQUIRED_DEPTH),Squat.REQUIRED_DEPTH);
-        timer = sp.getInt(mainactivity.getString(R.string.COUNTDOWN),StartFragment.COUNTDOWN);
+        reqdepth = sp.getInt(mainactivity.getString(R.string.REQUIRED_DEPTH), Squat.REQUIRED_DEPTH);
+        timer = sp.getInt(mainactivity.getString(R.string.COUNTDOWN), StartFragment.COUNTDOWN);
+        vibrate = sp.getBoolean(mainactivity.getString(R.string.VIBRATEONBOTTOM), StartFragment.VIBRATEATBOTTOM);
 
-
+        ToggleButton tb = (ToggleButton)rootView.findViewById(R.id.toggleButton);
+        tb.setChecked(vibrate);
         Button b = (Button)rootView.findViewById(R.id.save_button);
         b.setOnClickListener(this);
         EditText ed = (EditText)rootView.findViewById(R.id.required_depth_edit_text);
         ed.setText(reqdepth + "");
         EditText ed2 = (EditText)rootView.findViewById(R.id.countdown_edit_text);
         ed2.setText(timer+"");
-        ed2.addTextChangedListener(new TextWatcher() {
+        ed2.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    try {
+                        EditText ed2 = (EditText) rootView.findViewById(R.id.countdown_edit_text);
+                        if (Integer.parseInt(ed2.getText().toString()) < 0 || Integer.parseInt(ed2.getText().toString()) > 20) {
 
-            }
+                            ed2.setText(StartFragment.COUNTDOWN + "");
+                        } else {
+                            SeekBar seek = (SeekBar) rootView.findViewById(R.id.seekBar2);
+                            seek.setProgress(Integer.parseInt(ed2.getText().toString()));
+                        }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                try{
-                    if(Integer.parseInt(s.toString())<0 || Integer.parseInt(s.toString())>20) {
+                    } catch (Exception e) {
                         EditText ed2 = (EditText) rootView.findViewById(R.id.countdown_edit_text);
 
                         ed2.setText(StartFragment.COUNTDOWN + "");
-                    }else {
-                        SeekBar seek = (SeekBar) rootView.findViewById(R.id.seekBar2);
-                        seek.setProgress(Integer.parseInt(s.toString()));
                     }
-
-                }catch (Exception e){
-                    EditText ed2 = (EditText)rootView.findViewById(R.id.countdown_edit_text);
-
-                    ed2.setText(StartFragment.COUNTDOWN + "");
+                    return true;
                 }
+                return  false;
             }
+
         });
-        ed.addTextChangedListener(new TextWatcher() {
+
+        ed.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                try{
-                    if(Integer.parseInt(s.toString())<0 || Integer.parseInt(s.toString())>40) {
-
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId == EditorInfo.IME_ACTION_DONE) {
+                    try {
                         EditText ed = (EditText) rootView.findViewById(R.id.required_depth_edit_text);
+
+                        if (Integer.parseInt(ed.getText().toString())+20 < 0 || Integer.parseInt(ed.getText().toString())+20 > 40) {
+
+                            ed.setText(Squat.REQUIRED_DEPTH + "");
+                        } else {
+
+                            SeekBar seek = (SeekBar) rootView.findViewById(R.id.seekBar);
+                            seek.setProgress(20+Integer.parseInt(ed.getText().toString()));
+                        }
+
+                    } catch (Exception e) {
+                        EditText ed = (EditText) rootView.findViewById(R.id.required_depth_edit_text);
+
                         ed.setText(Squat.REQUIRED_DEPTH + "");
-                    }else {
-
-                        SeekBar seek = (SeekBar) rootView.findViewById(R.id.seekBar);
-                        seek.setProgress(Integer.parseInt(s.toString()));
                     }
-
-                }catch (Exception e){
-                    EditText ed = (EditText)rootView.findViewById(R.id.required_depth_edit_text);
-
-                    ed.setText(Squat.REQUIRED_DEPTH + "");
+                    return true;
                 }
+                return  false;
             }
         });
         SeekBar seek = (SeekBar)rootView.findViewById(R.id.seekBar);
-        seek.setProgress(reqdepth);
+        seek.setProgress(reqdepth+20);
         seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -155,6 +153,10 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
             EditText ed2 = (EditText)rootView.findViewById(R.id.countdown_edit_text);
             int reqdepth = Squat.REQUIRED_DEPTH;
             int timer = StartFragment.COUNTDOWN;
+            ToggleButton tb = (ToggleButton)rootView.findViewById(R.id.toggleButton);
+            boolean vibrate = tb.isChecked();
+            editor.putBoolean(mainactivity.getString(R.string.VIBRATEONBOTTOM),vibrate);
+
             try{
                 reqdepth = Integer.valueOf(ed.getText().toString());
                 timer = Integer.valueOf(ed2.getText().toString());

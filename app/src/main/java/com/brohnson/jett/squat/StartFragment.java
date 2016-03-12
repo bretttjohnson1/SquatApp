@@ -41,6 +41,7 @@ public class StartFragment extends Fragment implements SensorEventListener, View
     Context context;
     //time in ms until recording starts after button press
     public static int COUNTDOWN = 10;
+    public static boolean VIBRATEATBOTTOM = true;
     long waittime = COUNTDOWN*1000;
 
 
@@ -315,7 +316,7 @@ public class StartFragment extends Fragment implements SensorEventListener, View
                 /**
                  * checks if the required depth in squat has been achieved and vibrates if so
                  */
-                if(((int) (-90 * filteredpitch / Math.PI * 2))*parity<Squat.REQUIRED_DEPTH && !past){
+                if(((int) (-90 * filteredpitch / Math.PI * 2))*parity<Squat.REQUIRED_DEPTH && !past && VIBRATEATBOTTOM){
                     past = true;
                     Vibrator v = (Vibrator) context.getSystemService(context.VIBRATOR_SERVICE);
                     if (v.hasVibrator())

@@ -42,6 +42,7 @@
             android:layout_height="wrap_content"
             android:inputType="numberSigned"
             android:ems="10"
+            android:imeOptions="actionDone"
             android:id="@+id/required_depth_edit_text"
             android:layout_below="@+id/reqdepth_time_name"
             android:layout_alignParentStart="true"
@@ -68,10 +69,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/Indigo"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
         android:layout_below="@+id/relativeLayout"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:id="@+id/relativeLayout2"
+        android:layout_margin="5dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -107,6 +108,39 @@
             android:layout_alignBottom="@+id/countdown_edit_text"
             android:layout_toEndOf="@+id/countdown_edit_text"
             android:layout_marginBottom="15dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relativeLayout2"
+        android:background="@color/Indigo"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Vibrate at Bottom:"
+            android:id="@+id/textView2"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:textSize="32dp"
+            android:textColor="@color/WhiteText"
+            android:layout_margin="5dp" />
+
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New ToggleButton"
+            android:id="@+id/toggleButton"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
 
     </RelativeLayout>
 

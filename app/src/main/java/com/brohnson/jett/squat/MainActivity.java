@@ -3,6 +3,7 @@ package com.brohnson.jett.squat;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -30,9 +31,13 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
 
         SharedPreferences sp = getPreferences(Context.MODE_PRIVATE);
         Squat.REQUIRED_DEPTH = sp.getInt(getString(R.string.REQUIRED_DEPTH),Squat.REQUIRED_DEPTH);
+        StartFragment.COUNTDOWN = sp.getInt(getString(R.string.COUNTDOWN),StartFragment.COUNTDOWN);
+        StartFragment.VIBRATEATBOTTOM = sp.getBoolean(getString(R.string.VIBRATEONBOTTOM),StartFragment.VIBRATEATBOTTOM);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout2);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);

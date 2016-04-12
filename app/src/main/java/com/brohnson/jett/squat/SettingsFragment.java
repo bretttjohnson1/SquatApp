@@ -24,14 +24,11 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
 
     View rootView;
     Activity mainactivity;
-    public SettingsFragment(Activity main){
-        super();
-        mainactivity=main;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        mainactivity = (Activity)MainActivity.globalContext;
         rootView = inflater.inflate(R.layout.fragment_settings, container, false);
         int reqdepth=Squat.REQUIRED_DEPTH;
         int timer=StartFragment.COUNTDOWN;

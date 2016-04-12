@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity
             fragmentManager.beginTransaction().replace(R.id.main, frag).commit();
         } else if (id == R.string.settings) {
 
-            SettingsFragment frag = new SettingsFragment(this);
+            SettingsFragment frag = new SettingsFragment();
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.main, frag).commit();
         } else if (id == R.string.help) {

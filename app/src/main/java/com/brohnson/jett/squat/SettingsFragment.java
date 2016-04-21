@@ -47,6 +47,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        getActivity().setTitle("Settings");
         mainactivity = (Activity)MainActivity.globalContext;
         rootView = inflater.inflate(R.layout.fragment_settings, container, false);
         int reqdepth=Squat.REQUIRED_DEPTH;

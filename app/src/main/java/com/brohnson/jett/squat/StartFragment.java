@@ -74,7 +74,7 @@ public class StartFragment extends Fragment implements SensorEventListener, View
          */
         power = (PowerManager)context.getSystemService(Context.POWER_SERVICE);
         rootView = inflater.inflate(R.layout.fragment_start, container, false);
-        getActivity().setTitle("Start");
+        getActivity().setTitle("Check Form");
         rootView.findViewById(R.id.startbutton).setOnClickListener(this);
         mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         wl = power.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "squatting");

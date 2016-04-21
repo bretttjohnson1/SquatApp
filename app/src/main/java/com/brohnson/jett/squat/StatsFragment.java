@@ -49,6 +49,8 @@ public class StatsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        getActivity().setTitle("Stats");
+
         try {
             context=MainActivity.globalContext;
             rootView = inflater.inflate(R.layout.activity_squat_stats, container, false);

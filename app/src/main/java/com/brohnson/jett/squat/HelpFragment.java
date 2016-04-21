@@ -32,6 +32,8 @@ public class HelpFragment extends Fragment {
     View rootView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        getActivity().setTitle("Help");
+
         rootView = inflater.inflate(R.layout.fragment_help, container, false);
 
         return rootView;

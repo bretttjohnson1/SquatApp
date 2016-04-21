@@ -15,6 +15,9 @@
         To view stats regarding all of the squats, go to the stats menu in the left drawer. It works much like the individual stats.
 
     </string>
+    <string name="shorthelp">
+        Place phone in pocket before countdown expires, making sure phone is straight without drifting towards side of leg. After ready vibration, squat until phone vibrates, stand, and squat again.
+    </string>
     <string name="starting_in">Starting in %.1f (press to cancel)</string>
     <string name="action_settings">Settings</string>
     <string name="check_form">Check Form</string>
